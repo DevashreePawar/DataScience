@@ -1,0 +1,88 @@
+import pandas as pd
+df=pd.read_csv("C:/Users/CC-107/Desktop/iris.csv")
+#print(df)
+
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import GradientBoostingClassifier
+from sklearn import svm
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.neural_network import MLPClassifier
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.naive_bayes import GaussianNB
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+rf= RandomForestClassifier(random_state=1)
+gb=GradientBoostingClassifier(n_estimators=10)
+dt=DecisionTreeClassifier(random_state=0)
+nn=MLPClassifier(solver='lbfgs',alpha=1e-5,hidden_layer_sizes=(7,3),random_state=1)
+s=svm.SVC()
+mnb=MultinomialNB()
+gnb=GaussianNB()
+lr=LogisticRegression(random_state=0)
+
+x=df.drop("variety",axis=1)
+print(x)
+y=df["variety"]
+print(y)
+
+x_train,x_test,y_train,y_test=train_test_split(x,y,random_state=0,test_size=0.3)
+
+train=lr.fit(x_train,y_train)
+y_pred=lr.predict(x_test)
+print("Logistic regression = ")
+print(accuracy_score(y_test,y_pred))
+
+train1=rf.fit(x_train,y_train)
+y_pred1=rf.predict(x_test)
+print("Random forest = ")
+print(accuracy_score(y_test,y_pred1))
+
+train2=dt.fit(x_train,y_train)
+y_pred2=dt.predict(x_test)
+print("Decision tree = ")
+print(accuracy_score(y_test,y_pred2))
+
+train3=s.fit(x_train,y_train)
+y_pred3=s.predict(x_test)
+print("SVM = ")
+print(accuracy_score(y_test,y_pred3))
+
+train4=gb.fit(x_train,y_train)
+y_pred4=gb.predict(x_test)
+print("Gradient Boosting = ")
+print(accuracy_score(y_test,y_pred4))
+
+train5=mnb.fit(x_train,y_train)
+y_pred5=mnb.predict(x_test)
+print("Multinomial Naive bayes = ")
+print(accuracy_score(y_test,y_pred5))
+
+train6=gnb.fit(x_train,y_train)
+y_pred6=gnb.predict(x_test)
+print("Gaussial naive bayes = ")
+print(accuracy_score(y_test,y_pred6))
+
+train7=nn.fit(x_train,y_train)
+y_pred7=nn.predict(x_test)
+print("Neural Networks = ")
+print(accuracy_score(y_test,y_pred7))
+
+'''Output:
+Logistic regression = 
+0.9777777777777777
+Random forest = 
+0.9777777777777777
+Decision tree = 
+0.9777777777777777
+SVM = 
+0.9777777777777777
+Gradient Boosting = 
+0.9777777777777777
+Multinomial Naive bayes = 
+0.6
+Gaussial naive bayes = 
+1.0
+Neural Networks = 
+0.6'''
