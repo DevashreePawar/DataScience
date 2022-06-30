@@ -1,0 +1,28 @@
+import pandas as pd
+df=pd.read_csv("C:/Users/devup/OneDrive/Desktop/titanic.csv")
+print(df)
+
+df['Age'].fillna((df['Age'].mean()),inplace=True)
+
+x=df.drop(["PassengerId","Survived","Name","Sex","Ticket","Fare","Embarked","Cabin"],axis=1)
+print(x)
+y=df["Survived"]
+print(y)
+
+from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+gb=GradientBoostingClassifier(n_estimators=10)
+
+x_train,x_test,y_train,y_test=train_test_split(x,y,random_state=0,test_size=0.3)
+
+train4=gb.fit(x_train,y_train)
+y_pred4=gb.predict(x_test)
+print("Gradient Boosting = ")
+print(accuracy_score(y_test,y_pred4))
+
+'''Output::
+Gradient Boosting = 
+0.746268656716418
+'''
