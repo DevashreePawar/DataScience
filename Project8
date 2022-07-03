@@ -1,0 +1,67 @@
+import pandas as pd
+from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
+from sklearn import svm
+from sklearn.ensemble import GradientBoostingClassifier
+
+df = pd.read_csv("C:/Users/devup/OneDrive/Desktop/HAR.csv")
+
+rf= RandomForestClassifier(random_state=1)
+gb=GradientBoostingClassifier(n_estimators=10)
+dt=DecisionTreeClassifier(random_state=0)
+s=svm.SVC()
+lr=LogisticRegression(random_state=0)
+
+x = df.drop(['Activity','subject'], axis=1)
+y = df['Activity'].astype(object)
+
+le = LabelEncoder()
+y = le.fit_transform(y)
+
+scaler = StandardScaler()
+x = scaler.fit_transform(x)
+
+x_train, x_test, y_train, y_test=train_test_split(x, y, random_state=0, train_size=0.3)
+
+train=lr.fit(x_train,y_train)
+y_pred=lr.predict(x_test)
+print("Logistic regression = ")
+print(accuracy_score(y_test,y_pred))
+
+train1=rf.fit(x_train,y_train)
+y_pred1=rf.predict(x_test)
+print("Random forest = ")
+print(accuracy_score(y_test,y_pred1))
+
+train2=dt.fit(x_train,y_train)
+y_pred2=dt.predict(x_test)
+print("Decision tree = ")
+print(accuracy_score(y_test,y_pred2))
+
+train3=s.fit(x_train,y_train)
+y_pred3=s.predict(x_test)
+print("SVM = ")
+print(accuracy_score(y_test,y_pred3))
+
+train4=gb.fit(x_train,y_train)
+y_pred4=gb.predict(x_test)
+print("Gradient Boosting = ")
+print(accuracy_score(y_test,y_pred4))
+
+'''Output::
+Logistic regression = 
+0.9714396735962697
+Random forest = 
+0.9677482028366039
+Decision tree = 
+0.9182047794831941
+SVM = 
+0.9638624441422188
+Gradient Boosting = 
+0.9421021954536624
+'''
