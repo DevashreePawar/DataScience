@@ -1,0 +1,35 @@
+import pandas as pd
+from sklearn.preprocessing import LabelEncoder
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+data = pd.read_csv("C:/Users/devup/OneDrive/Desktop/Chicago_Crimes_2012_to_2017.csv")
+
+lr=LogisticRegression(random_state=0)
+
+data.drop(['ID','Description','Location Description','Date','Block','Location','FBI Code','Case Number','X Coordinate','Y Coordinate','Community Area','Updated On','IUCR'], inplace=True, axis=1)
+
+nan_value = float("NaN")
+data.replace("", nan_value, inplace=True)
+data.dropna(subset = ['Ward','District','Latitude','Longitude'], inplace=True)
+data.drop_duplicates()
+
+le = LabelEncoder()
+data['Arrest'] = le.fit_transform(data['Arrest'])
+data['Primary Type'] = le.fit_transform(data['Primary Type'])
+
+x = data.drop('Arrest',axis=1)
+y = data['Arrest']
+
+x_train, x_test, y_train, y_test = train_test_split(x, y, random_state=0, test_size=0.3 )
+
+train=lr.fit(x_train,y_train)
+y_pred=lr.predict(x_test)
+print("Logistic regression = ")
+print(accuracy_score(y_test,y_pred))
+
+'''Output::
+Logistic regression = 
+0.7387956842809679
+'''
