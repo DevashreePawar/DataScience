@@ -1,0 +1,29 @@
+import pandas as pd
+df=pd.read_csv("C:/Users/devup/OneDrive/Desktop/Walmart.csv")
+print(df)
+df['CPI'].fillna((df['CPI'].mean()),inplace=True)
+df['Unemployment'].fillna((df['Unemployment'].mean()),inplace=True)
+
+x=df.drop(["Date","MarkDown1","MarkDown2","MarkDown3","MarkDown4","MarkDown5","IsHoliday"],axis=1)
+print(x)
+y=df["IsHoliday"]
+print(y)
+
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+rf= RandomForestClassifier(random_state=1)
+
+x_train,x_test,y_train,y_test=train_test_split(x,y,random_state=0,test_size=0.3)
+
+train1=rf.fit(x_train,y_train)
+y_pred1=rf.predict(x_test)
+print("Random forest = ")
+print(accuracy_score(y_test,y_pred1))
+
+
+'''Output::
+Random forest = 
+0.945054945054945
+'''
